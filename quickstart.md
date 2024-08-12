@@ -11,8 +11,8 @@ Let's observe this in action. Follow the steps after launching the application:
 
 1. Start a new Chat Session.
 1. Enter a question, `What is the largest lake in North America?`, wait for response, `Lake Superior`
-1. Enter a follow up without context, `What is the second largest?`, wait for repsonse, `Lake Huron`
-1. Enter a third follow up, `What is the third largest?`, wait for resopnse, `Great Bear lake`
+1. Enter a follow up without context, `What is the second largest?`, wait for response, `Lake Huron`
+1. Enter a third follow up, `What is the third largest?`, wait for response, `Great Bear lake`
 
 Clearly the LLM is able to keep context for the conversation and answer appropriately. While this concept is simple enough it can present some challenges. It also introduces the concept of tokens for services like OpenAI.
 
@@ -34,13 +34,13 @@ Traditional caches are key-value pairs and use an equality match on the key to *
 
 ## Semantic Cache and Context
 
-Most semantic cache implementions and samples show *single-turn* caching, meaning that individual prompts (and their vectors) plus the completions are cached. This may be fine in simple scenarios but this misses an important aspect of completion generation which is providing adequate context for an LLM to generate a completion. 
+Most semantic cache implementations and samples show *single-turn* caching, meaning that individual prompts (and their vectors) plus the completions are cached. This may be fine in simple scenarios but this misses an important aspect of completion generation which is providing adequate context for an LLM to generate a completion. 
 
 Here is a simple mental exercise to illustrate this point. If I'm using a semantic cache that only caches single prompts and completions this is can occur.
 
 First let's start with a completely clean cache. A new user starts a session and asks the question, "What is the largest lake in North America?". The LLM will correctly respond with, "Lake Superior" with some additional facts about its size. Then the (vectorized) prompt and completion get stored in the cache. Next the user asks this follow up question, "What is the second largest?" Since this question hasn't been asked before it goes to the LLM to generate the completion and returns, "Lake Huron". Then this second prompt and completion get saved to the cache.
 
-Later a second user asks this question. "What is the largest stadium North America?". Since this is uncached, the LLM generates as reponse, "Michigan Stadium which seats 107,601 people." This gets stored in the cache. Next the user asks, "What is the second largest?". Since this question was asked by the previous user it returns the cached response, "Lake Huron", which of course is incorrect.
+Later a second user asks this question. "What is the largest stadium North America?". Since this is uncached, the LLM generates as response, "Michigan Stadium which seats 107,601 people." This gets stored in the cache. Next the user asks, "What is the second largest?". Since this question was asked by the previous user it returns the cached response, "Lake Huron", which of course is incorrect.
 
 So you can see the problem. In LLM applications, context matters. The cache may be fast, but a cache, particularly a *semantic cache* should return accurate responses.
 
@@ -88,7 +88,7 @@ You can Spend time trying different sequences of questions (and follow up questi
 
 # Semantic Kernel
 
-This project highlights the LLM orchestration SDK created by Microsft Research called, Semantic Kernel. Semantic Kernel is an open-source SDK that lets you easily build agents that can call your existing code. As a highly extensible SDK, you can use Semantic Kernel with models from OpenAI, Azure OpenAI, Hugging Face, and more! You can connect it to various vector databases using built-in connectors. By combining your existing C#, Python, and Java code with these models, you can build agents that answer questions and automate processes.
+This project highlights the LLM orchestration SDK created by Microsoft Research called, Semantic Kernel. Semantic Kernel is an open-source SDK that lets you easily build agents that can call your existing code. As a highly extensible SDK, you can use Semantic Kernel with models from OpenAI, Azure OpenAI, Hugging Face, and more! You can connect it to various vector databases using built-in connectors. By combining your existing C#, Python, and Java code with these models, you can build agents that answer questions and automate processes.
 
 The usage in this sample is very simple and just show the built-in plugins for OpenAI, intended to just give you a quick start in exploring its features and capabilities.
 
